@@ -1,2 +1,5 @@
 simulator/__pycache__
-simulator/src/__pycache__
+simulator/src/__pycache__ee271-conda-env-p2/
+*.zip
+.DS_Store
+.vscode/

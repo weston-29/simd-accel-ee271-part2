@@ -25,7 +25,62 @@ module top(
     );
 
     // START IMPLEMENTATION
-    // Your Code Here
+    //
+    // The testbenches reach into this module by name (dut.u_buffer.u_matrix_mem,
+    // dut.pe_inst_valid, dut.buf_inst_valid, ...), so these names must not change.
+
+    // Controller -> PEs / Buffer
+    pe_inst_t     pe_inst;
+    wire          pe_inst_valid;
+    buf_inst_t    buf_inst;
+    wire          buf_inst_valid;
+
+    // Buffer <-> PE array
+    wire [`MEM0_BITWIDTH-1:0] matrix_data;     // one PE_INPUT_BITWIDTH slice per PE
+    wire [`MEM1_BITWIDTH-1:0] vector_data;     // shared by every PE
+    wire [`MEM2_BITWIDTH-1:0] output_data;     // one PE_OUTPUT_BITWIDTH slice per PE
+
+    controller u_controller (
+        .clk(clk),
+        .rst_n(rst_n),
+        .inst(inst),
+        .inst_valid(inst_valid),
+        .inst_exec_begins(inst_exec_begins),
+        .pe_inst(pe_inst),
+        .pe_inst_valid(pe_inst_valid),
+        .buf_inst(buf_inst),
+        .buf_inst_valid(buf_inst_valid)
+    );
+
+    buffer u_buffer (
+        .clk(clk),
+        .rst_n(rst_n),
+        .buf_inst(buf_inst),
+        .buf_inst_valid(buf_inst_valid),
+        .matrix_data(matrix_data),
+        .vector_data(vector_data),
+        .output_data(output_data)
+    );
+
+    // SIMD array: every PE receives the same instruction and the same vector
+    // word, but its own slice of the matrix word, and writes its result back
+    // into the SAME slice position of the output word. Because the slice a PE
+    // reads and the slice it writes use one index, rows keep their place no
+    // matter how the PEs are numbered.
+    genvar i;
+    generate
+        for (i = 0; i < `PE_COUNT; i++) begin : g_pe
+            processing_element u_processing_element (
+                .clk(clk),
+                .rst_n(rst_n),
+                .pe_inst(pe_inst),
+                .pe_inst_valid(pe_inst_valid),
+                .vector_input(vector_data),
+                .matrix_input(matrix_data[i*`PE_INPUT_BITWIDTH +: `PE_INPUT_BITWIDTH]),
+                .vector_output(output_data[i*`PE_OUTPUT_BITWIDTH +: `PE_OUTPUT_BITWIDTH])
+            );
+        end
+    endgenerate
     // END IMPLEMENTATION
 
 

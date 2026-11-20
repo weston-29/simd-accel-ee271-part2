@@ -1,0 +1,43 @@
+ 
+****************************************
+Report : area
+Design : top
+Version: S-2021.06-SP5-4
+Date   : Fri Nov 20 09:49:13 2026
+****************************************
+
+Library(s) Used:
+
+    NangateOpenCellLibrary (File: /home/users/kroybal/simd-part2/unoptimized_verilog/synth/lib/NangateOpenCellLibrary.db)
+
+Number of ports:                            9
+Number of nets:                        131164
+Number of cells:                       114134
+Number of combinational cells:         105307
+Number of sequential cells:              8825
+Number of macros/black boxes:               0
+Number of buf/inv:                      11783
+Number of references:                      67
+
+Combinational area:             168144.452585
+Buf/Inv area:                     7105.658014
+Noncombinational area:           46937.829513
+Macro/Black Box area:                0.000000
+Net Interconnect area:      undefined  (Wire load has zero net area)
+
+Total cell area:                215082.282098
+Total area:                 undefined
+
+Hierarchical area distribution
+------------------------------
+
+                                  Global cell area              Local cell area
+                                  --------------------  ------------------------------- 
+Hierarchical cell                 Absolute     Percent  Combi-       Noncombi-   Black-
+                                  Total        Total    national     national    boxes   Design
+--------------------------------  -----------  -------  -----------  ----------  ------  ---------
+top                               215082.2821    100.0  168144.4526  46937.8295  0.0000  top
+--------------------------------  -----------  -------  -----------  ----------  ------  ---------
+Total                                                   168144.4526  46937.8295  0.0000
+
+1
